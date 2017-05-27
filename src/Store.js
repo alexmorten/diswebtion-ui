@@ -6,7 +6,7 @@ const AUTH_URL = "http://localhost:3000/auth/"
 
 function receive(url,cb){
   if(!isAuthenticated()){
-    return true; //meaning a need to transition to Login
+      return "login"; //meaning a need to transition to Login
   }
     var receiveHeaders = {
       accept: 'application/json',
@@ -22,7 +22,7 @@ function receive(url,cb){
 
 function send(url,obj,cb){
   if(!isAuthenticated()){
-    return true;
+    return "login";
   }
   var sendHeaders = {
     'accept': 'application/json',
@@ -40,7 +40,7 @@ function send(url,obj,cb){
 
 function destroy(url,cb){
   if(!isAuthenticated()){
-    return true;
+    return "login";
   }
   return fetch(API_URL+url,{
     headers:constructHeadersForRequest({}),
@@ -73,14 +73,16 @@ function deauthenticate(){
 function authenticate(email,password,cb){
   fetch(AUTH_URL+"sign_in?email="+email+"&password="+password,{
     method:"post",
-  }).then(checkStatus)
-  .then((response)=>{
+  }).then((response)=>{
     var heads = response.headers;
-
+    if (!response.ok) {
+      return;
+    }
 
   response.json().then((responseBody)=>{
     StorageAdaptor.setObject("current_user_data",responseBody.data);
     setNewAuthDetails(heads);
+    StorageAdaptor.remove("authenticated");
     StorageAdaptor.setItem("authenticated","true");
     if(cb){
       cb(responseBody);
@@ -104,7 +106,7 @@ function setNewAuthDetails(headers){
 
 }
 function isAuthenticated(){
-  return StorageAdaptor.getItem("authenticated") === true;
+  return StorageAdaptor.getItem("authenticated") !==null;
 }
 function constructHeadersForRequest(headers1){
   var authentication_headers=StorageAdaptor.getObject("auth_details");

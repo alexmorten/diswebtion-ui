@@ -3,18 +3,19 @@ import {Card,CardHeader,CardTitle, CardText} from 'material-ui/Card';
 import './SideList.css';
 import Store from './Store';
 import Side from './Side';
-class SideList extends Component{
+import AuthComponent from './AuthComponent';
+class SideList extends AuthComponent{
 
 state={
   loaded:false
 }
 getSides(){
-Store.receive("sides",(sides)=>{
-  this.setState({
-    sides:sides,
-    loaded:true
+  this.find("sides",(sides)=>{
+    this.setState({
+      sides:sides,
+      loaded:true
+    });
   });
-});
 }
 componentDidMount(){
   this.getSides();

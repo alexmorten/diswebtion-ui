@@ -1,13 +1,9 @@
 import StorageAdaptor from './StorageAdaptor';
 
-
 const API_URL = "http://localhost:3000/";
 const AUTH_URL = "http://localhost:3000/auth/"
 
 function receive(url,cb){
-  if(!isAuthenticated()){
-    return true; //meaning a need to transition to Login
-  }
     var receiveHeaders = {
       accept: 'application/json',
     };
@@ -21,9 +17,6 @@ function receive(url,cb){
 }
 
 function send(url,obj,cb){
-  if(!isAuthenticated()){
-    return true;
-  }
   var sendHeaders = {
     'accept': 'application/json',
     'Content-Type': 'application/json'
@@ -39,9 +32,6 @@ function send(url,obj,cb){
 }
 
 function destroy(url,cb){
-  if(!isAuthenticated()){
-    return true;
-  }
   return fetch(API_URL+url,{
     headers:constructHeadersForRequest({}),
     method:"delete"
@@ -63,11 +53,10 @@ function checkStatus(response) {
   console.log(error); // eslint-disable-line no-console
   //throw error;
 }
-
 function deauthenticate(){
-  // StorageAdaptor.remove("current_user_data");
-  // StorageAdaptor.remove("authenticated");
-  // StorageAdaptor.remove("auth_details");
+  StorageAdaptor.remove("current_user_data");
+  StorageAdaptor.remove("authenticated");
+  StorageAdaptor.remove("auth_details");
   //TODO: transition to login page
 }
 function authenticate(email,password,cb){
@@ -89,26 +78,27 @@ function authenticate(email,password,cb){
 });
 }
 function extractAuthDetails(headers){
-  var authDetails = {};
-  authDetails["access-token"]=headers.get("access-token");
-  authDetails["expiry"]=headers.get("expiry");
-  authDetails["uid"]=headers.get("uid");
-  authDetails["token-type"]=headers.get("token-type");
+  var authDetails = {
+     "access-token": headers.get("access-token"),
+     "token-type": headers.get("token-type"),
+     expiry: headers.get("expiry"),
+     uid: headers.get("uid"),
+  };
   return authDetails;
 }
 function setNewAuthDetails(headers){
-  if(headers.get("access-token")){
-    var authDetails = extractAuthDetails(headers);
-    StorageAdaptor.setObject("auth_details",authDetails);
-  }
-
+  var authDetails = extractAuthDetails(headers);
+  StorageAdaptor.setObject("auth_details",authDetails);
 }
 function isAuthenticated(){
   return StorageAdaptor.getItem("authenticated") === true;
 }
 function constructHeadersForRequest(headers1){
+  console.log(headers1);
   var authentication_headers=StorageAdaptor.getObject("auth_details");
+  console.log(authentication_headers);
   var headers = Object.assign(headers1,authentication_headers);
+  console.log(headers);
   return headers;
 }
 
@@ -116,5 +106,5 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Store = {authenticate,deauthenticate,receive,send,destroy,isAuthenticated};
-export default Store;
+const AuthStore = {authenticate,deauthenticate,receive,send,destroy,isAuthenticated};
+export default AuthStore;

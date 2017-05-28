@@ -3,7 +3,7 @@ import Store from './Store';
 class AuthComponent extends Component{
   transitionToLogin(){
 
-    this.props.history.push("login");
+    this.props.history.push("/login");
     this.props.history.goForward();
   }
   find(url,cb){

@@ -30,7 +30,7 @@ render(){
    sides = this.props.topic.sides.map((side)=>{
       return(
         <Card className="side-card" key={side.id}>
-          <Card title={side.title} actAsExpander={true} showExpandableButton={true}/>
+          <CardHeader title={side.title} actAsExpander={true} showExpandableButton={true}/>
           <CardText expandable={true}>{side.description}</CardText>
         </Card>
       );

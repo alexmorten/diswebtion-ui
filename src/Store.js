@@ -6,12 +6,16 @@ const AUTH_URL = "http://localhost:3000/auth/"
 
 function receive(url,cb){
   if(!isAuthenticated()){
+
+
       return "login"; //meaning a need to transition to Login
   }
+
     var receiveHeaders = {
       accept: 'application/json',
     };
     var completeHeaders = constructHeadersForRequest(receiveHeaders);
+
     return fetch(API_URL+url,{
       headers:completeHeaders
     })
@@ -51,6 +55,7 @@ function destroy(url,cb){
 
 
 function checkStatus(response) {
+  console.log(response.status);
   if (response.ok) {
     setNewAuthDetails(response.headers);
     return response;
@@ -62,28 +67,30 @@ function checkStatus(response) {
   error.response = response;
   console.log(error); // eslint-disable-line no-console
   //throw error;
+
 }
 
 function deauthenticate(){
-  // StorageAdaptor.remove("current_user_data");
-  // StorageAdaptor.remove("authenticated");
-  // StorageAdaptor.remove("auth_details");
+  StorageAdaptor.remove("current_user_data");
+  StorageAdaptor.remove("authenticated");
+  StorageAdaptor.remove("auth_details");
   //TODO: transition to login page
 }
 function authenticate(email,password,cb){
   fetch(AUTH_URL+"sign_in?email="+email+"&password="+password,{
     method:"post",
   }).then((response)=>{
+
     var heads = response.headers;
     if (!response.ok) {
       return;
     }
-
+    setNewAuthDetails(response.headers);
   response.json().then((responseBody)=>{
+
     StorageAdaptor.setObject("current_user_data",responseBody.data);
-    setNewAuthDetails(heads);
-    StorageAdaptor.remove("authenticated");
     StorageAdaptor.setItem("authenticated","true");
+
     if(cb){
       cb(responseBody);
     }
@@ -91,6 +98,8 @@ function authenticate(email,password,cb){
 });
 }
 function extractAuthDetails(headers){
+  console.log(headers.get("access-token"));
+  console.log("<----");
   var authDetails = {};
   authDetails["access-token"]=headers.get("access-token");
   authDetails["expiry"]=headers.get("expiry");
@@ -99,23 +108,37 @@ function extractAuthDetails(headers){
   return authDetails;
 }
 function setNewAuthDetails(headers){
+
+  console.log("?");
   if(headers.get("access-token")){
+    console.log("new!");
+    //deauthenticate();
+    console.log("->");
+    console.log(headers.get("access-token"));
     var authDetails = extractAuthDetails(headers);
+
     StorageAdaptor.setObject("auth_details",authDetails);
   }
 
 }
 function isAuthenticated(){
-  return StorageAdaptor.getItem("authenticated") !==null;
+
+  return StorageAdaptor.getItem("authenticated") === "true";
 }
 function constructHeadersForRequest(headers1){
   var authentication_headers=StorageAdaptor.getObject("auth_details");
   var headers = Object.assign(headers1,authentication_headers);
+
   return headers;
 }
 
 function parseJSON(response) {
-  return response.json();
+  if(response){
+    return response.json();
+  }else{
+    return {error:"error"};
+  }
+
 }
 
 const Store = {authenticate,deauthenticate,receive,send,destroy,isAuthenticated};

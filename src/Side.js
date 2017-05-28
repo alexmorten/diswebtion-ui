@@ -8,7 +8,7 @@ render(){
     <Card className="side-card" key={this.props.side.id}>
       <CardHeader title={this.props.side.title} subtitle={this.props.side.user.fullname} actAsExpander={true} showExpandableButton={true}/>
       <CardText expandable={true}>{this.props.side.description}</CardText>
-      <ArgumentList expandable={true} side={this.props.side}/>
+      <CardText style={{padding:"8px"}}><ArgumentList expandable={true} side={this.props.side}/></CardText>
     </Card>
   );
 }

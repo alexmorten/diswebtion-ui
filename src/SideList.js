@@ -1,7 +1,6 @@
-import React , {Component} from 'react';
+import React  from 'react';
 import {Card,CardHeader,CardTitle, CardText} from 'material-ui/Card';
 import './SideList.css';
-import Store from './Store';
 import Side from './Side';
 import AuthComponent from './AuthComponent';
 class SideList extends AuthComponent{
@@ -36,11 +35,11 @@ render(){
       );
     });
     }
-    console.log(sides);
     return(
       <Card className="sides-card">
         <CardTitle title="Sides"/>
-        {sides}
+        <CardText style={{padding:"8px"}}>{sides}</CardText>
+
       </Card>
     );
 

@@ -1,5 +1,4 @@
-import React , {Component} from 'react';
-import Store from './Store';
+import React  from 'react';
 import {Card,CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import SideList from './SideList';
 import './Topic.css';

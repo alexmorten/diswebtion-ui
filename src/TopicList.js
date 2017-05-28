@@ -1,5 +1,4 @@
-import React,{Component} from 'react';
-import Store from './Store';
+import React from 'react';
 import TopicListItem from './TopicListItem';
 import './TopicList.css';
 import AuthComponent from './AuthComponent';

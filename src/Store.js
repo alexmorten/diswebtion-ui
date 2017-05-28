@@ -55,9 +55,9 @@ function destroy(url,cb){
 
 
 function checkStatus(response) {
-  console.log(response.status);
+
   if (response.ok) {
-    setNewAuthDetails(response.headers);
+  //  setNewAuthDetails(response.headers);
     return response;
   }else if (response.status === 401) {
     deauthenticate();
@@ -80,9 +80,7 @@ function authenticate(email,password,cb){
   fetch(AUTH_URL+"sign_in?email="+email+"&password="+password,{
     method:"post",
   }).then((response)=>{
-
-    var heads = response.headers;
-    if (!response.ok) {
+      if (!response.ok) {
       return;
     }
     setNewAuthDetails(response.headers);
@@ -98,23 +96,23 @@ function authenticate(email,password,cb){
 });
 }
 function extractAuthDetails(headers){
-  console.log(headers.get("access-token"));
-  console.log("<----");
+
   var authDetails = {};
   authDetails["access-token"]=headers.get("access-token");
   authDetails["expiry"]=headers.get("expiry");
   authDetails["uid"]=headers.get("uid");
+  authDetails["client"]=headers.get("client");
   authDetails["token-type"]=headers.get("token-type");
   return authDetails;
 }
 function setNewAuthDetails(headers){
 
-  console.log("?");
+
   if(headers.get("access-token")){
-    console.log("new!");
+
     //deauthenticate();
-    console.log("->");
-    console.log(headers.get("access-token"));
+
+
     var authDetails = extractAuthDetails(headers);
 
     StorageAdaptor.setObject("auth_details",authDetails);

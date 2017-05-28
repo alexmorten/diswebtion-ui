@@ -1,13 +1,13 @@
-import React,{Component} from 'react';
-import Store from './Store';
+import React from 'react';
 import TopicListItem from './TopicListItem';
 import './TopicList.css';
-class TopicList extends Component {
+import AuthComponent from './AuthComponent';
+class TopicList extends AuthComponent {
   state = {
     topics:[]
   }
   getTopics(){
-    Store.receive("topics",(response)=>{
+    this.find("topics",(response)=>{
       this.setState({
         topics:response
       });

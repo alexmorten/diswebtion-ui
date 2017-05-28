@@ -7,7 +7,6 @@ import RouteController from './RouteController';
 
 class App extends Component {
   render() {
-    console.log(this.props.match);
     return (
       <MuiThemeProvider>
 

@@ -1,15 +1,15 @@
-import React , {Component} from 'react';
-import Store from './Store';
+import React  from 'react';
 import {Card,CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import SideList from './SideList';
 import './Topic.css';
-class Topic extends Component{
+import AuthComponent from './AuthComponent';
+class Topic extends AuthComponent{
   state={
     loaded:false
   }
 
   getData(){
-    Store.receive("topics/"+this.props.match.params.topic_id,(topic)=>{
+    this.find("topics/"+this.props.match.params.topic_id,(topic)=>{
       this.setState({
         topic:topic,
         loaded:true

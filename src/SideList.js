@@ -1,20 +1,20 @@
-import React , {Component} from 'react';
+import React  from 'react';
 import {Card,CardHeader,CardTitle, CardText} from 'material-ui/Card';
 import './SideList.css';
-import Store from './Store';
 import Side from './Side';
-class SideList extends Component{
+import AuthComponent from './AuthComponent';
+class SideList extends AuthComponent{
 
 state={
   loaded:false
 }
 getSides(){
-Store.receive("sides",(sides)=>{
-  this.setState({
-    sides:sides,
-    loaded:true
+  this.find("sides",(sides)=>{
+    this.setState({
+      sides:sides,
+      loaded:true
+    });
   });
-});
 }
 componentDidMount(){
   this.getSides();
@@ -29,17 +29,17 @@ render(){
    sides = this.props.topic.sides.map((side)=>{
       return(
         <Card className="side-card" key={side.id}>
-          <Card title={side.title} actAsExpander={true} showExpandableButton={true}/>
+          <CardHeader title={side.title} actAsExpander={true} showExpandableButton={true}/>
           <CardText expandable={true}>{side.description}</CardText>
         </Card>
       );
     });
     }
-    console.log(sides);
     return(
       <Card className="sides-card">
         <CardTitle title="Sides"/>
-        {sides}
+        <CardText style={{padding:"8px"}}>{sides}</CardText>
+
       </Card>
     );
 

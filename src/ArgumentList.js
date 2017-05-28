@@ -9,7 +9,7 @@ render(){
 
     argumentsItems = this.props.side.arguments.map((argument)=>{
       return(
-        <Card className="argument-card">
+        <Card className="argument-card" key={argument.id}>
           <CardHeader title={argument.title}/>
           <CardText>{argument.description}</CardText>
         </Card>
@@ -19,7 +19,7 @@ render(){
   return(
     <Card className="arguments-card"  >
       <CardHeader title="Arguments" actAsExpander={true} showExpandableButton={true} />
-      <div expandable={true}> {argumentsItems}</div>
+      <CardText style={{padding:"8px"}} expandable={true}>{argumentsItems}</CardText>
     </Card>
   );
 }

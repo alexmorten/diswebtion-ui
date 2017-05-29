@@ -9,7 +9,7 @@ class SideList extends AuthComponent{
 handleAdd = (newSide)=>{
   newSide.topic_id = this.props.topic.id;
   this.post("sides",newSide,(answer)=>{
-    this.getSides();
+    this.props.refresh();
   });
 }
 

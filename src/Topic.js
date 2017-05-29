@@ -8,7 +8,7 @@ class Topic extends AuthComponent{
     loaded:false
   }
 
-  getData(){
+  getData=()=>{
     this.find("topics/"+this.props.match.params.topic_id,(topic)=>{
       this.setState({
         topic:topic,
@@ -29,7 +29,7 @@ class Topic extends AuthComponent{
             <CardText>{this.state.topic.description}</CardText>
 
           </Card>
-          <SideList topic={this.state.topic}/>
+          <SideList refresh={this.getData} topic={this.state.topic}/>
         </div>
       );
 

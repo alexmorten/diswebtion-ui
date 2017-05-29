@@ -23,7 +23,11 @@ class BasicAddDialogButton extends Component{
       description:this.state.description
     };
     this.props.add(newItem);
-    this.setState({dialogOpen:false});
+    this.setState({
+      dialogOpen:false,
+      title:"",
+      description:""
+    });
   }
   handleTitleChange = (e)=>{
     //e.preventDefault();

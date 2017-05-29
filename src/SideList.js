@@ -1,43 +1,29 @@
 import React  from 'react';
-import {Card,CardHeader,CardTitle, CardText} from 'material-ui/Card';
-import './SideList.css';
+import {Card,CardTitle, CardText} from 'material-ui/Card';
+import './css/SideList.css';
 import Side from './Side';
-import AuthComponent from './AuthComponent';
-class SideList extends AuthComponent{
+import AuthComponent from './helperComponents/AuthComponent';
+import BasicAddDialogButton from './helperComponents/BasicAddDialogButton';
 
-state={
-  loaded:false
-}
-getSides(){
-  this.find("sides",(sides)=>{
-    this.setState({
-      sides:sides,
-      loaded:true
-    });
+class SideList extends AuthComponent{
+handleAdd = (newSide)=>{
+  newSide.topic_id = this.props.topic.id;
+  this.post("sides",newSide,(answer)=>{
+    this.getSides();
   });
 }
-componentDidMount(){
-//  this.getSides();
-}
+
 render(){
   var sides = [];
-  if(this.state.loaded){
-   sides = this.state.sides.map((side)=>{
+
+   sides = this.props.topic.sides.map((side)=>{
      return (<Side key={side.id} side={side}/>);
    });
-  }else{
-   sides = this.props.topic.sides.map((side)=>{
-      return(
-        <Card className="side-card" key={side.id}>
-          <CardHeader title={side.title} actAsExpander={true} showExpandableButton={true}/>
-          <CardText expandable={true}>{side.description}</CardText>
-        </Card>
-      );
-    });
-    }
+
     return(
       <Card className="sides-card">
         <CardTitle title="Sides"/>
+        <BasicAddDialogButton title="Add a new Side" add={this.handleAdd} mini={true}/>
         <CardText style={{padding:"8px"}}>{sides}</CardText>
 
       </Card>

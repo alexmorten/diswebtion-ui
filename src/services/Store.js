@@ -1,7 +1,8 @@
 import StorageAdaptor from './StorageAdaptor';
 
 
-const API_URL = "https://diswebtion-api.herokuapp.com/";
+//const API_URL = "https://diswebtion-api.herokuapp.com/";
+const API_URL = "http://localhost:3000/";
 const AUTH_URL = API_URL+"auth/";
 
 function receive(url,cb){

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
 import {Link} from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import FlatButton from 'material-ui/FlatButton';
-import RouteController from './RouteController';
-import Store from './Store';
+import Store from './services/Store';
 
 class App extends Component {
   handleLogout = (e)=>{

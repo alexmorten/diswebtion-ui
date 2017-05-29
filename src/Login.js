@@ -1,9 +1,9 @@
 import React , {Component} from 'react';
-import Store from './Store';
+import Store from './services/Store';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
-import './Login.css';
+import './css/Login.css';
 
 
 class Login extends Component{

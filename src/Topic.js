@@ -1,8 +1,8 @@
 import React  from 'react';
 import {Card,CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import SideList from './SideList';
-import './Topic.css';
-import AuthComponent from './AuthComponent';
+import './css/Topic.css';
+import AuthComponent from './helperComponents/AuthComponent';
 class Topic extends AuthComponent{
   state={
     loaded:false

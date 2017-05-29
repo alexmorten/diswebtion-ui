@@ -1,0 +1,7 @@
+.refresh-container{
+  position: relative,
+}
+.refresh-indicator{
+  display: inline-block;
+  position: relative !important;
+}

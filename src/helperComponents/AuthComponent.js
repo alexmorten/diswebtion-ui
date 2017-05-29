@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import Store from './Store';
+import Store from '../services/Store';
 class AuthComponent extends Component{
   transitionToLogin(){
 

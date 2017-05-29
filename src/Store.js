@@ -1,13 +1,11 @@
 import StorageAdaptor from './StorageAdaptor';
 
 
-const API_URL = "http://localhost:3000/";
-const AUTH_URL = "http://localhost:3000/auth/"
+const API_URL = "https://diswebtion-api.herokuapp.com/";
+const AUTH_URL = API_URL+"auth/";
 
 function receive(url,cb){
   if(!isAuthenticated()){
-
-
       return "login"; //meaning a need to transition to Login
   }
 

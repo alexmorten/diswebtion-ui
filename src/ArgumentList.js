@@ -17,7 +17,7 @@ render(){
     });
 
   return(
-    <Card className="arguments-card"  >
+    <Card className="arguments-card">
       <CardHeader title="Arguments" actAsExpander={true} showExpandableButton={true} />
       <CardText style={{padding:"8px"}} expandable={true}>{argumentsItems}</CardText>
     </Card>

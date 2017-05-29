@@ -17,7 +17,7 @@ getSides(){
   });
 }
 componentDidMount(){
-  this.getSides();
+//  this.getSides();
 }
 render(){
   var sides = [];

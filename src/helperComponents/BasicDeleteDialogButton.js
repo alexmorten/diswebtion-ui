@@ -17,6 +17,7 @@ class BasicDeleteDialogButton extends Component {
   }
   handleDialogSubmit = (e)=>{
     e.preventDefault();
+    this.setState({dialogOpen:false});
     this.props.delete();
   }
   render(){

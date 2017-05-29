@@ -1,6 +1,11 @@
 .topic-card{
   margin: 20px;
+  position: relative;
+  padding: 0 0 10px 0;
 }
 .topic-card-link{
   text-decoration: none;
+  position: absolute;
+  right:10px;
+  bottom:0;
 }

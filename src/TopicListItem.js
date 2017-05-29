@@ -1,17 +1,22 @@
 import React ,{ Component} from 'react';
-import {Card,CardHeader, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 import './TopicListItem.css';
 import {Link} from 'react-router-dom';
+import FontIcon from 'material-ui/FontIcon';
+
+
 class TopicListItem extends Component {
   render(){
     return (
-      <Link to={"topics/"+this.props.topic.id} className="topic-card-link">
+
         <Card className="topic-card">
-          <CardHeader title={this.props.topic.user.firstname + " " +this.props.topic.user.lastname }/>
-          <CardTitle title={this.props.topic.title} />
+          <CardTitle title={this.props.topic.title} subtitle={this.props.topic.user.fullname}/>
           <CardText>{this.props.topic.description}</CardText>
+            <Link to={"topics/"+this.props.topic.id} className="topic-card-link">
+              <FontIcon className="material-icons" >arrow_forward</FontIcon>
+            </Link>
         </Card>
-      </Link>
+
     )
   }
 }

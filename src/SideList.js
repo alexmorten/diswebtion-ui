@@ -17,7 +17,7 @@ render(){
   var sides = [];
 
    sides = this.props.topic.sides.map((side)=>{
-     return (<Side key={side.id} side={side}/>);
+     return (<Side key={side.id} side={side} refresh={this.props.refresh}/>);
    });
 
     return(

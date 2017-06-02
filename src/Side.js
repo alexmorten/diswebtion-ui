@@ -4,13 +4,14 @@ import './css/Side.css';
 import ArgumentList from './ArgumentList';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import AuthComponent from './helperComponents/AuthComponent';
+import BasicDeleteDialogButton from './helperComponents/BasicDeleteDialogButton';
 
 class Side extends AuthComponent{
   state={
     loaded:false,
     side:{},
   }
-  getSide(){
+  getSide = ()=>{
     this.find("sides/"+this.props.side.id,(side)=>{
       this.setState({
         side:side,
@@ -18,8 +19,26 @@ class Side extends AuthComponent{
       });
     });
   }
+
   componentDidMount(){
     this.getSide();
+  }
+
+  addArgument = (argument)=>{
+    argument.side_id = this.state.side.id;
+    this.post("arguments",argument,(successAnswer)=>{
+      this.getSide();
+    },(failAnswer)=>{
+      this.getSide();
+    });
+  }
+
+  handleDelete=()=>{
+    this.delete("sides/"+this.state.side.id,(successAnswer)=>{
+      this.props.refresh();
+    },(failAnswer)=>{
+      this.props.refresh();
+    });
   }
 render(){
     if(this.state.loaded){
@@ -27,7 +46,8 @@ render(){
         <Card className="side-card" key={this.props.side.id}>
           <CardHeader title={this.state.side.title} subtitle={this.state.side.user.fullname} actAsExpander={true} showExpandableButton={true}/>
           <CardText expandable={true}>{this.state.side.description}</CardText>
-          <CardText style={{padding:"8px"}} expandable={true}><ArgumentList  side={this.state.side}/></CardText>
+          <CardText style={{padding:"8px"}} expandable={true}><ArgumentList add={this.addArgument} side={this.state.side} refresh={this.getSide}/></CardText>
+          <BasicDeleteDialogButton itemTitle={this.state.side.title} delete={this.handleDelete} iconClass="side-delete-button"/>
         </Card>
       );
     }else{

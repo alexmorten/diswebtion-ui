@@ -1,11 +1,11 @@
 import StorageAdaptor from './StorageAdaptor';
 
 
-const API_URL = "https://diswebtion-api.herokuapp.com/";
-//const API_URL = "http://localhost:3000/";
+//const API_URL = "https://diswebtion-api.herokuapp.com/";
+const API_URL = "http://localhost:3000/";
 const AUTH_URL = API_URL+"auth/";
 
-function receive(url,cb){
+function receive(url,cb,fail){
   if(!isAuthenticated()){
       return "login"; //meaning a need to transition to Login
   }
@@ -20,10 +20,16 @@ function receive(url,cb){
     })
       .then(checkStatus)
       .then(parseJSON)
-      .then(cb);
+      .then((answer)=>{
+        if(!answer.error){
+          cb(answer);
+        }else if (fail) {
+          fail(answer);
+        }
+      });
 }
 
-function send(url,obj,cb){
+function send(url,obj,cb,fail){
   if(!isAuthenticated()){
     return "login";
   }
@@ -38,10 +44,16 @@ function send(url,obj,cb){
     body:JSON.stringify(obj)
   }).then(checkStatus)
     .then(parseJSON)
-    .then(cb);
+    .then((answer)=>{
+      if(!answer.error){
+        cb(answer);
+      }else if (fail) {
+        fail(answer);
+      }
+    });
 }
 
-function destroy(url,cb){
+function destroy(url,cb,fail){
   if(!isAuthenticated()){
     return "login";
   }
@@ -49,7 +61,13 @@ function destroy(url,cb){
     headers:constructHeadersForRequest({}),
     method:"delete"
   }).then((checkStatus))
-    .then(cb);
+    .then((answer)=>{
+      if(!answer.error){
+        cb(answer);
+      }else if (fail) {
+        fail(answer);
+      }
+    });
 }
 
 
@@ -75,11 +93,14 @@ function deauthenticate(){
   StorageAdaptor.remove("auth_details");
   //TODO: transition to login page
 }
-function authenticate(email,password,cb){
+function authenticate(email,password,cb,fail){
   fetch(AUTH_URL+"sign_in?email="+email+"&password="+password,{
     method:"post",
   }).then((response)=>{
       if (!response.ok) {
+        if(fail){
+          fail(response);
+        }
       return;
     }
     setNewAuthDetails(response.headers);

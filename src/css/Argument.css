@@ -1,0 +1,12 @@
+.argument-card{
+  position: relative;
+}
+.argument-delete-button{
+  position: absolute;
+  top:20px;
+  left:15px;
+  cursor: pointer;
+}
+.argument-delete-button:hover{
+    border-bottom: 1px solid red;
+}

@@ -6,19 +6,19 @@ class AuthComponent extends Component{
     this.props.history.push("/login");
     this.props.history.goForward();
   }
-  find(url,cb){
+  find(url,cb,fail){
 
-    if(Store.receive(url,cb)==="login"){
+    if(Store.receive(url,cb,fail)==="login"){
       this.transitionToLogin();
     }
   }
-  post(url,obj,cb){
-    if(Store.send(url,obj,cb)==="login"){
+  post(url,obj,cb,fail){
+    if(Store.send(url,obj,cb,fail)==="login"){
       this.transitionToLogin();
     }
   }
-  delete(url,cb){
-    if(Store.destroy(url,cb)==="login"){
+  delete(url,cb,fail){
+    if(Store.destroy(url,cb,fail)==="login"){
       this.transitionToLogin();
     }
   }

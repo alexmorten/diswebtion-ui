@@ -5,3 +5,15 @@
   display: inline-block;
   position: relative !important;
 }
+.side-card{
+  position: relative;
+}
+.side-delete-button{
+  position: absolute;
+  left: 15px;
+  top: 20px;
+  cursor: pointer;
+}
+.side-delete-button:hover{
+  border-bottom: 1px solid red;
+}

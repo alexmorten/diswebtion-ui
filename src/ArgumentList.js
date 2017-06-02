@@ -16,7 +16,7 @@ render(){
       return(
         <div key={argument.id}>
           <Divider/>
-          <Argument argument={argument} refresh={this.props.refresh}/>
+          <Argument argument={argument} refresh={this.props.refresh} topic={this.props.topic}/>
         </div>
       );
     });

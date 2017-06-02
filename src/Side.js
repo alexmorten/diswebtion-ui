@@ -5,6 +5,7 @@ import ArgumentList from './ArgumentList';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import AuthComponent from './helperComponents/AuthComponent';
 import BasicDeleteDialogButton from './helperComponents/BasicDeleteDialogButton';
+import ShowRating from './helperComponents/ShowRating';
 
 class Side extends AuthComponent{
   state={
@@ -45,8 +46,11 @@ render(){
       return(
         <Card className="side-card" key={this.props.side.id}>
           <CardHeader title={this.state.side.title} subtitle={this.state.side.user.fullname} actAsExpander={true} showExpandableButton={true}/>
+          <ShowRating rating={this.state.side.rating}/>
           <CardText expandable={true}>{this.state.side.description}</CardText>
-          <CardText style={{padding:"8px"}} expandable={true}><ArgumentList add={this.addArgument} side={this.state.side} refresh={this.getSide}/></CardText>
+          <CardText style={{padding:"8px"}} expandable={true}>
+            <ArgumentList add={this.addArgument} side={this.state.side} topic={this.props.topic} refresh={this.getSide}/>
+          </CardText>
           <BasicDeleteDialogButton itemTitle={this.state.side.title} delete={this.handleDelete} iconClass="side-delete-button"/>
         </Card>
       );

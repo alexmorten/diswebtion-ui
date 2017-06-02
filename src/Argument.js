@@ -4,6 +4,9 @@ import {Card,CardHeader, CardText} from 'material-ui/Card';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import BasicDeleteDialogButton from './helperComponents/BasicDeleteDialogButton';
 import './css/Argument.css';
+import ShowRating from './helperComponents/ShowRating';
+import VoteDialog from './helperComponents/VoteDialog';
+
 class Argument extends AuthComponent{
 state={
   loaded:false,
@@ -27,13 +30,25 @@ handleDelete = ()=>{
     this.props.refresh();
   })
 }
+handleAddVote = (newVote)=>{
+  newVote.argument_id = this.state.argument.id;
+  this.post("votes",newVote,(successAnswer)=>{
+    this.getArgument();
+    this.props.refresh();
+  },(failAnswer)=>{
+    this.getArgument();
+    this.props.refresh();
+  });
+}
 render(){
   if(this.state.loaded){
   return(
     <Card className="argument-card" key={this.state.argument.id}>
       <CardHeader title={this.state.argument.title}/>
+      <ShowRating rating={this.state.argument.rating}/>
       <CardText>{this.state.argument.description}</CardText>
       <BasicDeleteDialogButton delete={this.handleDelete} title="Delete Argument" itemTitle={this.state.argument.title} iconClass="argument-delete-button"/>
+      <VoteDialog title="Vote" message={"Vote for " +this.state.argument.title} add={this.handleAddVote} conditions={this.props.topic.conditions}/>
     </Card>
   );
   }else{

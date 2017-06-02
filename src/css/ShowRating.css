@@ -1,0 +1,9 @@
+.show-rating-value.pos{
+  color: green;
+}
+.show-rating-value.zero{
+  color:black;
+}
+.show-rating-value.neg{
+  color:red;
+}

@@ -3,6 +3,8 @@ import Store from './services/Store';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
+import {Link} from 'react-router-dom';
+
 import './css/Login.css';
 
 class Login extends Component{
@@ -68,6 +70,9 @@ class Login extends Component{
       <TextField floatingLabelText="password" type="password" value={this.state.password} onChange={this.onPasswordChange}/>
       <br/>
       <FlatButton label="Login" disabled={this.shouldButtonBeDisabled()} onClick={this.handleSubmit}/>
+      <br/>
+      <br/>
+      <span className="register-message"> <Link to="/register">Don't have an account yet?</Link> </span>
       {loadingIndicator}
     </form>);
   }

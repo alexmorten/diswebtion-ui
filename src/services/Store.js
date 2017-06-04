@@ -1,32 +1,32 @@
 import StorageAdaptor from './StorageAdaptor';
 
 
-const API_URL = "https://diswebtion-api.herokuapp.com/";
-//const API_URL = "http://localhost:3000/";
+//const API_URL = "https://diswebtion-api.herokuapp.com/";
+const API_URL = "http://localhost:3000/";
 const AUTH_URL = API_URL+"auth/";
 
 function receive(url,cb,fail){
   if(!isAuthenticated()){
-      return "login"; //meaning a need to transition to Login
+    return "login"; //meaning a need to transition to Login
   }
 
-    var receiveHeaders = {
-      accept: 'application/json',
-    };
-    var completeHeaders = constructHeadersForRequest(receiveHeaders);
+  var receiveHeaders = {
+    accept: 'application/json',
+  };
+  var completeHeaders = constructHeadersForRequest(receiveHeaders);
 
-    return fetch(API_URL+url,{
-      headers:completeHeaders
-    })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then((answer)=>{
-        if(!answer.error){
-          cb(answer);
-        }else if (fail) {
-          fail(answer);
-        }
-      });
+  return fetch(API_URL+url,{
+    headers:completeHeaders
+  })
+  .then(checkStatus)
+  .then(parseJSON)
+  .then((answer)=>{
+    if(!answer.error){
+      cb(answer);
+    }else if (fail) {
+      fail(answer);
+    }
+  });
 }
 
 function send(url,obj,cb,fail){
@@ -43,14 +43,14 @@ function send(url,obj,cb,fail){
     method:"post",
     body:JSON.stringify(obj)
   }).then(checkStatus)
-    .then(parseJSON)
-    .then((answer)=>{
-      if(!answer.error){
-        cb(answer);
-      }else if (fail) {
-        fail(answer);
-      }
-    });
+  .then(parseJSON)
+  .then((answer)=>{
+    if(!answer.error){
+      cb(answer);
+    }else if (fail) {
+      fail(answer);
+    }
+  });
 }
 
 function destroy(url,cb,fail){
@@ -61,20 +61,20 @@ function destroy(url,cb,fail){
     headers:constructHeadersForRequest({}),
     method:"delete"
   }).then((checkStatus))
-    .then((answer)=>{
-      if(!answer.error){
-        cb(answer);
-      }else if (fail) {
-        fail(answer);
-      }
-    });
+  .then((answer)=>{
+    if(!answer.error){
+      cb(answer);
+    }else if (fail) {
+      fail(answer);
+    }
+  });
 }
 
 
 function checkStatus(response) {
 
   if (response.ok) {
-  //  setNewAuthDetails(response.headers);
+    //  setNewAuthDetails(response.headers);
     return response;
   }else if (response.status === 401) {
     deauthenticate();
@@ -97,26 +97,42 @@ function authenticate(email,password,cb,fail){
   fetch(AUTH_URL+"sign_in?email="+email+"&password="+password,{
     method:"post",
   }).then((response)=>{
-      if (!response.ok) {
-        if(fail){
-          fail(response);
-        }
+    if (!response.ok) {
+      if(fail){
+        fail(response);
+      }
       return;
     }
     setNewAuthDetails(response.headers);
-  response.json().then((responseBody)=>{
+    response.json().then((responseBody)=>{
 
-    StorageAdaptor.setObject("current_user_data",responseBody.data);
-    StorageAdaptor.setItem("authenticated","true");
+      StorageAdaptor.setObject("current_user_data",responseBody.data);
+      StorageAdaptor.setItem("authenticated","true");
 
-    if(cb){
-      cb(responseBody);
+      if(cb){
+        cb(responseBody);
+      }
+    });
+  });
+}
+function registrate(details,cb,fail){
+  var queryString=constructQueryParams(details);
+
+  fetch(AUTH_URL+queryString,{
+    method:"post"
+  }).then((response)=>{
+    if (!response.ok) {
+      if(fail){fail(response)}
+      return;
+    }else{
+      response.json().then((responseBody)=>{
+        cb(responseBody);
+      });
     }
   });
-});
 }
-function extractAuthDetails(headers){
 
+function extractAuthDetails(headers){
   var authDetails = {};
   authDetails["access-token"]=headers.get("access-token");
   authDetails["expiry"]=headers.get("expiry");
@@ -125,20 +141,15 @@ function extractAuthDetails(headers){
   authDetails["token-type"]=headers.get("token-type");
   return authDetails;
 }
+
 function setNewAuthDetails(headers){
-
-
   if(headers.get("access-token")){
-
     //deauthenticate();
-
-
     var authDetails = extractAuthDetails(headers);
-
     StorageAdaptor.setObject("auth_details",authDetails);
   }
-
 }
+
 function isAuthenticated(){
 
   return StorageAdaptor.getItem("authenticated") === "true";
@@ -158,6 +169,28 @@ function parseJSON(response) {
   }
 
 }
+function constructQueryParams(params){
+  var paramsArr = [];
+  console.log(params);
+  for (var key in params){
+    paramsArr.push({
+      key:key,
+      value:params[key]
+    });
+  }
+  console.log(paramsArr);
+  if (paramsArr.length == 0) {
+    return "";
+  }
+  var firstParam = paramsArr.shift();
+  console.log(paramsArr);
+  var queryString="?"+firstParam.key+"="+firstParam.value;
+  for (var indx in paramsArr){
 
-const Store = {authenticate,deauthenticate,receive,send,destroy,isAuthenticated};
+    queryString+="&"+paramsArr[indx].key+"="+paramsArr[indx].value;
+  }
+  console.log(queryString);
+  return queryString;
+}
+const Store = {authenticate,deauthenticate,receive,send,destroy,isAuthenticated,constructQueryParams,registrate};
 export default Store;

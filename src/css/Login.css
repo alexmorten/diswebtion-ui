@@ -2,3 +2,7 @@
   max-width: 300px;
   margin: 40px auto;
 }
+.register-message a{
+  font-size: 10px;
+  text-decoration: none;
+}

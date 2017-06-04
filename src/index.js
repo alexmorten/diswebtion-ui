@@ -4,6 +4,8 @@ import registerServiceWorker from './services/registerServiceWorker';
 import './css/index.css';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import RouteController from './RouteController';
+import Store from './services/Store';
+
 
   ReactDOM.render(<RouteController/>,
      document.getElementById('root'));

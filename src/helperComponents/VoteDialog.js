@@ -28,7 +28,7 @@ class VoteDialog extends Component{
       title:this.state.title,
       description:this.state.description,
       value:this.state.value,
-      condition_id:this.props.conditions[this.state.condition_index]
+      condition_id:this.props.conditions[this.state.condition_index].id
     };
     this.props.add(newItem);
     this.setState({

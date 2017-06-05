@@ -1,5 +1,6 @@
 import React ,{ Component} from 'react';
 import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Slider from 'material-ui/Slider';
@@ -130,7 +131,7 @@ class VoteDialog extends Component{
           {this.props.message ? this.props.message : ""}
 
       </Dialog>
-      <FlatButton onClick={this.handleDialogOpen}>Vote</FlatButton>
+      <RaisedButton onClick={this.handleDialogOpen}>Vote</RaisedButton>
 
       </div>);
   }

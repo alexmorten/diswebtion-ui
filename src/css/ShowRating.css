@@ -7,3 +7,7 @@
 .show-rating-value.neg{
   color:red;
 }
+.icon{
+  position: relative;
+  top:7px;
+}

@@ -1,6 +1,5 @@
 import StorageAdaptor from './StorageAdaptor';
 
-
 const API_URL = "https://diswebtion-api.herokuapp.com/";
 //const API_URL = "http://localhost:3000/";
 const AUTH_URL = API_URL+"auth/";
@@ -28,7 +27,29 @@ function receive(url,cb,fail){
     }
   });
 }
+function query(url,paramsObj,cb,fail){
+  if(!isAuthenticated()){
+    return "login"; //meaning a need to transition to Login
+  }
+  var headers = {
+    accept: 'application/json',
+  };
+  var completeHeaders = constructHeadersForRequest(headers);
+  return fetch(API_URL+url+constructQueryParams(paramsObj),{
+    headers:completeHeaders
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then((answer)=>{
+      if(!answer.error){
+        cb(answer);
+      }else if (fail) {
+        fail(answer);
+      }
+    });
 
+
+
+}
 function send(url,obj,cb,fail){
   if(!isAuthenticated()){
     return "login";
@@ -192,5 +213,5 @@ function constructQueryParams(params){
   console.log(queryString);
   return queryString;
 }
-const Store = {authenticate,deauthenticate,receive,send,destroy,isAuthenticated,constructQueryParams,registrate};
+const Store = {authenticate,deauthenticate,receive,query,send,destroy,isAuthenticated,constructQueryParams,registrate};
 export default Store;

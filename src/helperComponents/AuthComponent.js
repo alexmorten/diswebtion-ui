@@ -12,6 +12,11 @@ class AuthComponent extends Component{
       this.transitionToLogin();
     }
   }
+  query(url,paramsObj,cb,fail){
+    if(Store.query(url,paramsObj,cb,fail)==="login"){
+      this.transitionToLogin();
+    }
+  }
   post(url,obj,cb,fail){
     if(Store.send(url,obj,cb,fail)==="login"){
       this.transitionToLogin();

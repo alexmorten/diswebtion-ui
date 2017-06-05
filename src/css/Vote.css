@@ -1,0 +1,8 @@
+.vote{
+  margin: 0 0 10px 0;
+  padding: 0 0 5px 0;
+}
+.vote .name, .vote .title,.vote .description{
+  margin: 5px 0 0 0;
+  font-weight: normal;
+}

@@ -4,7 +4,8 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {Link} from 'react-router-dom';
-
+import queryString from 'query-string';
+import StorageAdaptor from './services/StorageAdaptor';
 import './css/Login.css';
 
 class Login extends Component{
@@ -44,7 +45,26 @@ class Login extends Component{
       });
     }
   }
+  componentDidMount(){
+    var params = queryString.parse(window.location.search)
+    console.log(params);
+    if (params["token"] && params["uid"] && params["client_id"] && params["expiry"]) {
+      console.log(params);
+      var auth_details = {};
+      auth_details["access-token"]=params["token"];
+      auth_details["uid"]=params["uid"];
+      auth_details["client"]=params["client_id"];
+      auth_details["expiry"]=params["expiry"];
+      auth_details["token-type"]="Bearer";
+      StorageAdaptor.setObject("auth_details",auth_details);
+      StorageAdaptor.setItem("authenticated","true");
+
+      this.props.history.push("/");
+      this.props.history.goForward();
+    }
+  }
   render(){
+  //  console.log(this.props);
     const style={
       container: {
       position: 'relative',

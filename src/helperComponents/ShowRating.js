@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import '../css/ShowRating.css';
+import FontIcon from 'material-ui/FontIcon';
 
 class ShowRating extends Component{
   render(){
@@ -13,7 +14,8 @@ class ShowRating extends Component{
     }
     return(
       <span className={"show-rating-container "+this.props.containerClass ? this.props.containerClass : ""}>
-        Rating: <span className={"show-rating-value "+ratingValueClass}>{this.props.rating}</span>
+      <FontIcon className="material-icons icon" >stars</FontIcon>
+       <span className={"show-rating-value "+ratingValueClass}>{this.props.rating}</span>
       </span>
     )
   }

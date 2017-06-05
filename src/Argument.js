@@ -6,6 +6,7 @@ import BasicDeleteDialogButton from './helperComponents/BasicDeleteDialogButton'
 import './css/Argument.css';
 import ShowRating from './helperComponents/ShowRating';
 import VoteDialog from './helperComponents/VoteDialog';
+import VoteList from './VoteList';
 
 class Argument extends AuthComponent{
 state={
@@ -45,10 +46,11 @@ render(){
   return(
     <Card className="argument-card" key={this.state.argument.id}>
       <CardHeader title={this.state.argument.title}/>
-      <ShowRating rating={this.state.argument.rating}/>
+      <ShowRating rating={this.state.argument.rating} containerClass="argument-rating"/>
       <CardText>{this.state.argument.description}</CardText>
       <BasicDeleteDialogButton delete={this.handleDelete} title="Delete Argument" itemTitle={this.state.argument.title} iconClass="argument-delete-button"/>
       <VoteDialog title="Vote" message={"Vote for " +this.state.argument.title} add={this.handleAddVote} conditions={this.props.topic.conditions}/>
+      <VoteList argument={this.state.argument}/>
     </Card>
   );
   }else{

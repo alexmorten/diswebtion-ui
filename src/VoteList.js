@@ -27,7 +27,7 @@ class VoteList extends AuthComponent{
     if(this.state.loaded){
       var votesItems = this.state.votes.map((vote)=>{
         return (
-          <div className="vote">
+          <div className="vote" key={vote.id}>
             <Divider />
             <h2 className="name">{vote.user.fullname}</h2>
             <h3 className="title">{vote.title}</h3>

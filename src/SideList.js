@@ -21,12 +21,12 @@ render(){
    });
 
     return(
-      <Card className="sides-card">
-        <CardTitle title="Sides"/>
+        <div>
+        <h4 className="side-list-heading">Sides</h4>
         <BasicAddDialogButton title="Add a new Side" add={this.handleAdd} mini={true}/>
-        <CardText style={{padding:"8px"}}>{sides}</CardText>
+        {sides}
+        </div>
 
-      </Card>
     );
 
 }

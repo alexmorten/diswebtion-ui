@@ -12,7 +12,9 @@ class Login extends Component{
   state={
     loading:false,
     email:"",
-    password:""
+    password:"",
+    failed:false,
+    errors:{}
   }
   onEmailChange = (e)=>{
     e.preventDefault();
@@ -42,12 +44,23 @@ class Login extends Component{
         this.setState({loading:false});
         this.props.history.push("/");
         this.props.history.goForward();
+      },(failResponse)=>{
+        console.log(failResponse);
+        this.setState({loading:false});
+        failResponse.json().then((failBody)=>{
+          console.log(failBody);
+          this.setState({
+            failed:true,
+            errors:failBody.errors
+          });
+
+        });
       });
     }
   }
   componentDidMount(){
     var params = queryString.parse(window.location.search)
-    console.log(params);
+
     if (params["token"] && params["uid"] && params["client_id"] && params["expiry"]) {
       console.log(params);
       var auth_details = {};
@@ -82,8 +95,15 @@ class Login extends Component{
         left={250}
         status="loading"
          style={style.refresh}
-      />)
+      />);
     }
+    var errors = (<div></div>);
+    if(this.state.failed){
+      errors = this.state.errors.map((error)=>{
+      return (  <span key={error} className="error">{error}</span>);
+      });
+    }
+
     return(<form className="login-form" style={style.container} >
       <TextField  floatingLabelText="email" type="email" value={this.state.email} onChange={this.onEmailChange}/>
       <br/>
@@ -91,6 +111,7 @@ class Login extends Component{
       <br/>
       <FlatButton label="Login" disabled={this.shouldButtonBeDisabled()} onClick={this.handleSubmit}/>
       <br/>
+      {errors}
       <br/>
       <span className="register-message"> <Link to="/register">Don't have an account yet?</Link> </span>
       {loadingIndicator}

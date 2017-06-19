@@ -6,10 +6,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import RouteController from './RouteController';
 //import Store from './services/Store';
 
-
+injectTapEventPlugin();
   ReactDOM.render(<RouteController/>,
-     document.getElementById('root'));
+      document.getElementById('root'));
 
- injectTapEventPlugin();
 
- registerServiceWorker();
+
+  registerServiceWorker();

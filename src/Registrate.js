@@ -9,6 +9,8 @@ class Registrate extends Component{
   state={
     loading:false,
     sent:false,
+    failed:false,
+    errors:{},
     firstname:"",
     lastname:"",
     email:"",
@@ -30,12 +32,26 @@ class Registrate extends Component{
     },(failResponse)=>{
       this.setState({loading:false});
       console.log(failResponse);
+      failResponse.json().then((responseBody)=>{
+        console.log(responseBody);
+        this.setState({
+          failed:true,
+          errors:responseBody.errors
+        });
+      });
     });
   }
   handleChange = (e)=>{
     var obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
+  }
+  buttonShouldBeDisabled=()=>{
+    return !(this.state.firstname
+       && this.state.lastname
+       && this.state.email
+       && this.state.password
+       && this.state.password_confirmation);
   }
 
   render(){
@@ -61,10 +77,26 @@ class Registrate extends Component{
         top={-10}
         left={250}
         status="loading"
-         style={style.refresh}
+        style={style.refresh}
       />)
     }
+    var emailErrors=(<div></div>);
+    var passwordErrors=(<div></div>);
+    var passwordConfirmationErrors=(<div></div>);
+    if(this.state.failed){
+      var factoryFunc = (error)=>{
+        return (
+          <span key={error} className="error-small">{error}</span>
+        );
+      };
+      if(this.state.errors.email)
+        emailErrors=this.state.errors.email.map(factoryFunc);
+      if(this.state.errors.password)
+        passwordErrors=this.state.errors.password.map(factoryFunc);
+      if(this.state.errors.password_confirmation)
+        passwordConfirmationErrors=this.state.errors.password_confirmation.map(factoryFunc);
 
+    }
     return(
       <form className="register-form" style={style.container} >
         <h4>Create an account</h4>
@@ -74,11 +106,15 @@ class Registrate extends Component{
         <br/>
         <TextField  floatingLabelText="email" name="email" type="email" onChange={this.handleChange}/>
         <br/>
+        {emailErrors}
         <TextField  floatingLabelText="password" name="password" type="password" onChange={this.handleChange}/>
         <br/>
+        {passwordErrors}
         <TextField  floatingLabelText="password confirm" name="password_confirmation" type="password" onChange={this.handleChange}/>
         <br/>
-        <FlatButton onClick={this.registrate} >Create</FlatButton>
+        {passwordConfirmationErrors}
+        <br/>
+        <FlatButton onClick={this.registrate} disabled={this.buttonShouldBeDisabled()}>Create</FlatButton>
         {loadingIndicator}
       </form>
     );

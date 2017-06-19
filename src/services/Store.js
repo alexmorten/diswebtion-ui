@@ -160,11 +160,13 @@ function extractAuthDetails(headers){
   authDetails["uid"]=headers.get("uid");
   authDetails["client"]=headers.get("client");
   authDetails["token-type"]=headers.get("token-type");
+
   return authDetails;
 }
 
 function setNewAuthDetails(headers){
   if(headers.get("access-token")){
+
     //deauthenticate();
     var authDetails = extractAuthDetails(headers);
     StorageAdaptor.setObject("auth_details",authDetails);
@@ -192,25 +194,23 @@ function parseJSON(response) {
 }
 function constructQueryParams(params){
   var paramsArr = [];
-  console.log(params);
   for (var key in params){
     paramsArr.push({
       key:key,
       value:params[key]
     });
   }
-  console.log(paramsArr);
   if (paramsArr.length === 0) {
     return "";
   }
   var firstParam = paramsArr.shift();
-  console.log(paramsArr);
+
   var queryString="?"+firstParam.key+"="+firstParam.value;
   for (var indx in paramsArr){
 
     queryString+="&"+paramsArr[indx].key+"="+paramsArr[indx].value;
   }
-  console.log(queryString);
+
   return queryString;
 }
 const Store = {authenticate,deauthenticate,receive,query,send,destroy,isAuthenticated,constructQueryParams,registrate};
